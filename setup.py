@@ -43,7 +43,7 @@ def get_requirements():
 
 
 setup(
-    name="my_project",
+    name="ngrams",
     version=get_version(),
     description="TODO",
     url="TODO",
@@ -51,6 +51,6 @@ setup(
     packages=find_packages("src"),
     include_package_data=True,
     # reference our temp script from above
-    package_data={"my_project": ["VERSION", "requirements.txt", "MANIFEST.in"]},
+    package_data={"ngrams": ["VERSION", "requirements.txt", "MANIFEST.in"]},
     install_requires=get_requirements(),
 )

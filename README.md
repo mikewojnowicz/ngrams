@@ -1,6 +1,6 @@
-# my_project
+# ngrams
 
-Welcome to my_project
+Welcome to ngrams
 
 
 # CLI usage
