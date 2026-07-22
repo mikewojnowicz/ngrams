@@ -4,7 +4,7 @@ import string
 import numpy as np
 
 ###
-# FUNCTIONS
+# HELPER FUNCTIONS
 ###
 
 def make_eta_trigram(mu_bigram_left, mu_bigram_right):
@@ -22,7 +22,7 @@ def make_eta_bigram(mu_unigram_left, mu_transit, mu_unigram_right):
 np.random.seed(0)
 
 # general things
-alphabet = list(string.ascii_uppercase) # A to Z
+alphabet = list(string.ascii_uppercase+string.digits) # A to Z, 0-9
 
 mu_Omega = np.array([0.3]) # TODO: This should be called mu_unigram
 V_Omega = np.array([[0.1**2]]) # TODO: This should be called V_unigram
@@ -129,7 +129,8 @@ eta_TH =  make_eta_bigram(mu_T, mu_transit, mu_H)
 # A_TH = V_bigram_inv + Phi_left_3.T @ V_trigram_inv @  Phi_left_3 # precision 
 # b_TH =  V_bigram_inv @ eta_TH + Phi_left_3.T @ V_trigram_inv @ (mu_THE -  Phi_right_3 @ mu_HE) # precision-weighted mean
 
-A_TH = V_bigram_inv + Phi_left_3.T @ V_trigram_inv @  Phi_left_3 # precision 
+num_expansions = len(alphabet)
+A_TH = V_bigram_inv + num_expansions*Phi_left_3.T @ V_trigram_inv @  Phi_left_3 # precision 
 b_TH_ =  V_bigram_inv @ eta_TH 
 for character in alphabet:
     expansion = "TH"+character  #e.g. THE
