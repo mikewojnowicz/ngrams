@@ -126,17 +126,17 @@ print(f"Posterior mean of mu_THE: {mean_of_mu_THE_samples}")
 eta_TH =  make_eta_bigram(mu_T, mu_transit, mu_H)
 
 
-# A_TH = V_bigram_inv + Phi_right_3.T @ V_trigram_inv @  Phi_right_3 # precision 
-# b_TH =  V_bigram_inv @ eta_TH + Phi_right_3.T @ V_trigram_inv @ (mu_THE -  Phi_left_3 @ mu_HE) # precision-weighted mean
+# A_TH = V_bigram_inv + Phi_left_3.T @ V_trigram_inv @  Phi_left_3 # precision 
+# b_TH =  V_bigram_inv @ eta_TH + Phi_left_3.T @ V_trigram_inv @ (mu_THE -  Phi_right_3 @ mu_HE) # precision-weighted mean
 
-A_TH = V_bigram_inv + Phi_right_3.T @ V_trigram_inv @  Phi_right_3 # precision 
+A_TH = V_bigram_inv + Phi_left_3.T @ V_trigram_inv @  Phi_left_3 # precision 
 b_TH_ =  V_bigram_inv @ eta_TH 
 for character in alphabet:
     expansion = "TH"+character  #e.g. THE
     complement = "H"+character  #e.g HE
     mu_expansion = mus_trigram[expansion]
     mu_complement = mus_bigram[complement]
-    b_TH_ += Phi_right_3.T @ V_trigram_inv @ (mu_expansion -  Phi_left_3 @ mu_complement)
+    b_TH_ += Phi_left_3.T @ V_trigram_inv @ (mu_expansion -  Phi_right_3 @ mu_complement)
 b_TH = b_TH_ 
 
 
@@ -153,23 +153,26 @@ print(f"Posterior mean of mu_TH: {mean_of_mu_TH_samples}")
 
 # TODO: Write the above manual check as an assert.
 
-### Check Inference for mu_hat_T (by giving it the true value of parents)
 
-eta_T = mu_Omega
 
-A_T = V_unigram_inv +  Phi_left_2.T@V_bigram_inv@Phi_left_2 + Phi_right_2.T@V_bigram_inv@Phi_right_2  # precision 
-b_T =  V_unigram_inv @ eta_T + Phi_right_2.T @ V_bigram_inv @ (mu_TH -  Phi_left_2 @ mu_H) # precision-weighted mean
+# ### Check Inference for mu_hat_T (by giving it the true value of parents)
+# TODO: Update this section. 
 
-# TODO: Compute the below upfroint, only once.
-V_T_post = np.linalg.inv(A_T)
-eta_T_post = V_T_post @ b_T
+# eta_T = mu_Omega
 
-# take lots of samples for now
-S= 1000
-mu_T_samples = np.random.multivariate_normal(mean=eta_T_post, cov=V_T_post, size=S)
-mean_of_mu_T_samples = np.mean(mu_T_samples,0)  
-print(f"True value of mu_T: {mu_T}")
-print(f"Posterior mean of mu_T: {mean_of_mu_T_samples}")
+# A_T = V_unigram_inv +  Phi_left_2.T@V_bigram_inv@Phi_left_2 + Phi_right_2.T@V_bigram_inv@Phi_right_2  # precision 
+# b_T =  V_unigram_inv @ eta_T + Phi_right_2.T @ V_bigram_inv @ (mu_TH -  Phi_left_2 @ mu_H) # precision-weighted mean
 
-# TODO: Write the above manual check as an assert.
+# # TODO: Compute the below upfront, only once.
+# V_T_post = np.linalg.inv(A_T)
+# eta_T_post = V_T_post @ b_T
+
+# # take lots of samples for now
+# S= 1000
+# mu_T_samples = np.random.multivariate_normal(mean=eta_T_post, cov=V_T_post, size=S)
+# mean_of_mu_T_samples = np.mean(mu_T_samples,0)  
+# print(f"True value of mu_T: {mu_T}")
+# print(f"Posterior mean of mu_T: {mean_of_mu_T_samples}")
+
+# # TODO: Write the above manual check as an assert.
 
